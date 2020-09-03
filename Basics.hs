@@ -160,7 +160,8 @@ jn (Just Nothing) = Nothing
 jn Nothing = Nothing
 
 jn' :: Maybe (Maybe a) -> Maybe a
-jn' = undefined
+jn' (Just x) = x
+jn' Nothing = Nothing
 
 location :: String -> Maybe String
 location "cis501" = Just "Wu & Chen"
@@ -173,13 +174,13 @@ l1 :: [Double]
 l1 = [1.0,2.0,3.0,4.0]
 
 l2 :: [Int]
-l2 = undefined -- make a list of numbers
+l2 = [1,2,3,4] -- make a list of numbers
 
 l3 :: [(Int,Bool)]
 l3 = [ (1,True), (2, False) ]
 
 l4 :: [[Int]]
-l4 = undefined -- make a list of lists
+l4 = [[1,2],[3,4,5]] -- make a list of lists
 
 -- l5 :: [Int]
 -- l5 = [ 1 , True ]  -- doesn't type check
@@ -199,7 +200,7 @@ c1 = True : [False, False]
 c2 :: [Int]
 c2 = 1 : []
 
--- undefined: fill in the type of c3
+c3 :: [[a]] -- undefined: fill in the type of c3
 c3 = [] : []
 
 s1 :: [Char]
@@ -234,7 +235,7 @@ testRange = TestList [ range 3  6  ~?= [3,4,5,6],
 
 range :: Int -> Int -> [Int]
 
-range i j = undefined
+range i j = if i>j then [] else i : range (i+1) j
 
 runRTests :: IO Counts
 runRTests = runTestTT testRange
@@ -255,7 +256,10 @@ isSingleton [_] = True
 isSingleton _   = False
 
 isLong :: [a] -> Bool
-isLong = undefined
+isLong [] = False
+isLong [_] = False
+isLong [_, _] = False
+isLong _ = True
 
 testIsLong :: Test
 testIsLong = TestList [ not (isLong [])   ~? "nil",    -- can convert booleans to tests by naming them via `~?`
@@ -282,7 +286,8 @@ listIncrTests =
 
 listIncr :: [Int] -> [Int]
 
-listIncr = undefined
+listIncr [] = []
+listIncr (x : xs) = (x+1) : listIncr xs
 
 runLITests :: IO Counts
 runLITests = runTestTT listIncrTests
